@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import tkinter as tk
 from tkinter import ttk
 from playsound import playsound
@@ -18,10 +20,13 @@ root = tk.Tk()
 
 # Setting up file paths
 #workingFilePath = os.path.abspath(os.path.realpath(__file__))
-base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+#base_path = getattr(sys, '__MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+ASSET_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), 'assets'))
 
 def asset_path(relativePath):
-    return os.path.join(base_path, relativePath)
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, os.path.join(ASSET_DIR, relativePath))
+    return os.path.join(ASSET_DIR, relativePath)
 
 def setupChannelListFromConfig(configListString):
     newChannelList = configListString.strip('[').strip(']')
@@ -37,29 +42,29 @@ def callback(url):
 
 # Initialize config and config functions
 config = ConfigParser()
-config.read(asset_path('config.ini'))
+config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
 
 # Deprecated images
-live_light_image = tk.PhotoImage(file=asset_path("assets\\live_light.png"))
-offline_light_image = tk.PhotoImage(file=asset_path("assets\\offline_light.png"))
-error_light_image = tk.PhotoImage(file=asset_path("assets\\error_light.png"))
+live_light_image = tk.PhotoImage(file=asset_path("live_light.png"))
+offline_light_image = tk.PhotoImage(file=asset_path("offline_light.png"))
+error_light_image = tk.PhotoImage(file=asset_path("error_light.png"))
 #
-twitch_live_image = tk.PhotoImage(file=asset_path("assets\\twitch-live.png"))
-twitch_offline_image = tk.PhotoImage(file=asset_path("assets\\twitch-offline.png"))
-youtube_live_image = tk.PhotoImage(file=asset_path("assets\\youtube-live.png"))
-youtube_offline_image = tk.PhotoImage(file=asset_path("assets\\youtube-offline.png"))
-edit_button_image = tk.PhotoImage(file=asset_path("assets\\edit_button.png"))
-remove_button_image = tk.PhotoImage(file=asset_path("assets\\remove_button.png"))
+twitch_live_image = tk.PhotoImage(file=asset_path("twitch-live.png"))
+twitch_offline_image = tk.PhotoImage(file=asset_path("twitch-offline.png"))
+youtube_live_image = tk.PhotoImage(file=asset_path("youtube-live.png"))
+youtube_offline_image = tk.PhotoImage(file=asset_path("youtube-offline.png"))
+edit_button_image = tk.PhotoImage(file=asset_path("edit_button.png"))
+remove_button_image = tk.PhotoImage(file=asset_path("remove_button.png"))
 
 # Refresh Animation Image Set (tkinter limitation necessitates)
-refreshing_one = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_1.png"))
-refreshing_two = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_2.png"))
-refreshing_three = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_3.png"))
-refreshing_four = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_4.png"))
-refreshing_five = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_5.png"))
-refreshing_six = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_6.png"))
-refreshing_seven = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_7.png"))
-refreshing_eight = tk.PhotoImage(file=asset_path("assets\\refreshAnim\\refreshFrame_8.png"))
+refreshing_one = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_1.png"))
+refreshing_two = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_2.png"))
+refreshing_three = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_3.png"))
+refreshing_four = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_4.png"))
+refreshing_five = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_5.png"))
+refreshing_six = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_6.png"))
+refreshing_seven = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_7.png"))
+refreshing_eight = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_8.png"))
 refreshing_frame_list = [refreshing_one, refreshing_two, refreshing_three, refreshing_four, refreshing_five, refreshing_six, refreshing_seven, refreshing_eight]
 
 # Various settings that can be changed
