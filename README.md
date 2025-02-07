@@ -9,7 +9,7 @@ python ./streamNotifier.py
 ```
 Note: The above requires a Python Installation.  
   
-The second way to do it is to run the .exe file located in the dist folder. I will advise you CAUTION when running the exes. This one is safe, but honestly, you should doubt that a little bit.
+The second way to do it is to run the .exe file located in the dist folder. I will advise you CAUTION when running exes from random GitHubs in general. This one is safe, but honestly, you should doubt that a little bit.
 ## Basic Use
 Click the "Add Channel" button to add another channel you want to be notified about.  Even if someone only streams on one site, this program checks both sites with the same username.  
 The Red X buttons remove the channel from being watched that it shares a row with.  
