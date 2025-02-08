@@ -121,7 +121,7 @@ def playStreamWentLiveSound():
 
 def setNewSettings(primarySite, playSounds, stickyWindow):
     settingsConfig = ConfigParser()
-    settingsConfig.read(asset_path('config.ini'))
+    settingsConfig.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
     settingsConfig.set('settings', 'primarysite', primarySite)
     global conflictingTitleConfig
     conflictingTitleConfig = primarySite
@@ -135,7 +135,7 @@ def setNewSettings(primarySite, playSounds, stickyWindow):
         root.call("wm", "attributes", ".", "-topmost", "true")
     elif os.name == 'nt' and not stickyWindowConfig:
         root.call("wm", "attributes", ".", "-topmost", "false")
-    with open(asset_path('config.ini'), 'w') as f:
+    with open(os.path.join(os.path.dirname(__file__), 'config.ini'), 'w') as f:
         settingsConfig.write(f)
 
 #Building additional windows when requested
@@ -193,9 +193,9 @@ def buildAboutWindow():
 
 def updateChannelListConfig():
     channelListConfig=ConfigParser()
-    channelListConfig.read(asset_path('config.ini'))
+    channelListConfig.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
     channelListConfig.set('info', 'channels', str(channelList))
-    with open(asset_path('config.ini'), 'w') as f:
+    with open(os.path.join(os.path.dirname(__file__), 'config.ini'), 'w') as f:
         channelListConfig.write(f)
 
 def addNewChannel(newChannelName, addChannelWindow):
@@ -493,12 +493,12 @@ def refreshStreamerList(channels:list, twLabels, ytLabels, statusLabel, titleLab
         channelExistingInfo = channelLiveStatusDict[currentChannelName]
 
         if 'Live' == channelRefreshInfo[0]:
+            twLabels[i].configure(image=twitch_live_image)
+            tempUrlTw = 'http://www.twitch.tv/' + str(channelList[i])
+            twLabels[i].bind("<Button-1>", lambda event, j=tempUrlTw: callback(j))
+            twLabels[i].configure(cursor='hand2')
+            twLabels[i].update_idletasks()
             if 'Offline' == channelExistingInfo[0]:
-                twLabels[i].configure(image=twitch_live_image)
-                tempUrlTw = 'http://www.twitch.tv/' + str(channelList[i])
-                twLabels[i].bind("<Button-1>", lambda event, j=tempUrlTw: callback(j))
-                twLabels[i].configure(cursor='hand2')
-                twLabels[i].update_idletasks()
                 if playSoundsConfig:
                     playStreamWentLiveSound()
                 channelExistingInfo[0] = True
@@ -521,12 +521,12 @@ def refreshStreamerList(channels:list, twLabels, ytLabels, statusLabel, titleLab
                 titleLabels[i].configure(text='', bg=defaultBgColor)
 
         if 'Live' == channelRefreshInfo[1]:
+            ytLabels[i].configure(image=youtube_live_image)
+            tempUrlYt = 'http://www.youtube.com/watch?v=' + channelRefreshInfo[4]
+            ytLabels[i].bind("<Button-1>", lambda event, j=tempUrlYt: callback(j))
+            ytLabels[i].configure(cursor='hand2')
+            ytLabels[i].update_idletasks()
             if 'Offline' == channelExistingInfo[1]:
-                ytLabels[i].configure(image=youtube_live_image)
-                tempUrlYt = 'http://www.youtube.com/watch?v=' + channelRefreshInfo[4]
-                ytLabels[i].bind("<Button-1>", lambda event, j=tempUrlYt: callback(j))
-                ytLabels[i].configure(cursor='hand2')
-                ytLabels[i].update_idletasks()
                 if playSoundsConfig:
                     playStreamWentLiveSound()
                 channelExistingInfo[1] = True
