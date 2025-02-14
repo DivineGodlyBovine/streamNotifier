@@ -57,15 +57,17 @@ edit_button_image = tk.PhotoImage(file=asset_path("edit_button.png"))
 remove_button_image = tk.PhotoImage(file=asset_path("remove_button.png"))
 
 # Refresh Animation Image Set (tkinter limitation necessitates)
-refreshing_one = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_1.png"))
-refreshing_two = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_2.png"))
-refreshing_three = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_3.png"))
-refreshing_four = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_4.png"))
-refreshing_five = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_5.png"))
-refreshing_six = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_6.png"))
-refreshing_seven = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_7.png"))
-refreshing_eight = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_8.png"))
-refreshing_frame_list = [refreshing_one, refreshing_two, refreshing_three, refreshing_four, refreshing_five, refreshing_six, refreshing_seven, refreshing_eight]
+# refreshing_one = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_1.png"))
+# refreshing_two = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_2.png"))
+# refreshing_three = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_3.png"))
+# refreshing_four = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_4.png"))
+# refreshing_five = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_5.png"))
+# refreshing_six = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_6.png"))
+# refreshing_seven = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_7.png"))
+# refreshing_eight = tk.PhotoImage(file=asset_path("refreshAnim\\refreshFrame_8.png"))
+# refreshing_frame_list = [refreshing_one, refreshing_two, refreshing_three, refreshing_four, refreshing_five, refreshing_six, refreshing_seven, refreshing_eight]
+
+refreshImage = tk.PhotoImage(file=asset_path("refreshImage.png"))
 
 # Various settings that can be changed
 ####################################################################
@@ -116,8 +118,7 @@ title_column = 5
 
 
 def playStreamWentLiveSound():
-    print(asset_path('assets\\liveNotification.mp3'))
-    threading.Thread(target=playsound(asset_path('assets\\liveNotification.mp3')), daemon=True).start()
+    threading.Thread(target=playsound(asset_path('liveNotification.mp3')), daemon=True).start()
 
 def setNewSettings(primarySite, playSounds, stickyWindow):
     settingsConfig = ConfigParser()
@@ -359,8 +360,14 @@ def get_response(channelName):
     twitchUrlParser = twitchHtmlParser.twitchHtmlParser()
     youtubeUserUrlParser = youtubeHtmlParser.youtubeHtmlParser('user')
     if not channelName == 'debugchanneltw' or not channelName == 'debugchannelyt' or not channelName == 'debugchannelboth':
-        twitchUrlResponse = requests.get('https://www.twitch.tv/' + channelName, headers=headers).content.decode('utf-8')
-        youtubeUserUrlResponse = requests.get('https://www.youtube.com/@' + channelName, headers=headers).content.decode('utf-8')
+        try:
+            twitchUrlResponse = requests.get('https://www.twitch.tv/' + channelName, headers=headers).content.decode('utf-8')
+        except:
+            twitchUrlResponse = 'error in fetching from twitch'
+        try:
+            youtubeUserUrlResponse = requests.get('https://www.youtube.com/@' + channelName, headers=headers).content.decode('utf-8')
+        except:
+            youtubeUserUrlResponse = 'error in fetching from youtube'
         #Temporarily made Google mad at me. Hopefully it goes away next time I open this. CAPTCHA issues from accidentally spamming requests.
         #Maybe find a way to get around that in future.
         #youtubeUrlResponse = ''
@@ -474,7 +481,7 @@ def main():
 def refreshStreamerList(channels:list, twLabels, ytLabels, statusLabel, titleLabels, buttonClicked):
 
     # I want this to be an animation but am too stupid to make it happen rn
-    statusLabel.configure(image=refreshing_frame_list[0])
+    statusLabel.configure(image=refreshImage)
     statusLabel.update_idletasks()
 
     # Dictionary that contains live statuses per channel name
